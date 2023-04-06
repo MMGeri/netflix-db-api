@@ -5,7 +5,12 @@
   "main": "index.js",
   "type" :"module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "node app.js",
+    "docker-build": "docker image build -t netflix-db-api:latest .",
+    "docker-run": "docker container run -d --network netflix --name netflix-db-api netflix-db-api:latest",
+    "docker-stop": "docker container stop netflix-db-api",
+    "docker-rm": "docker container rm netflix-db-api"
   },
   "repository": {
     "type": "git",
