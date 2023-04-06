@@ -17,7 +17,7 @@ const router = Router()
 app.use(express.json())
 app.use(methodOverride())
 
-connect('mongodb://localhost:10022/netflix')
+connect('mongodb://netflix-db:27017/netflix')
 
 const serveOptions = {
   prefix: '',

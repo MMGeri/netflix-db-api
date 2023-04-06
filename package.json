@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type" :"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "node app.js",
-    "docker-build": "docker image build -t netflix-db-api:latest .",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "docker-build": "docker image build --file Dockerfile -t netflix-db-api:latest .",
     "docker-run": "docker container run -d --network netflix --name netflix-db-api netflix-db-api:latest",
-    "docker-stop": "docker container stop netflix-db-api",
-    "docker-rm": "docker container rm netflix-db-api"
+    "docker-build-dev": "docker image build --file Dockerfile.dev -t netflix-db-api:dev .",
+    "docker-dev": "docker container run -d  --network netflix --publish 10021:10021 --name netflix-db-api-dev --volume %cd%:/home/node/app netflix-db-api:dev"
   },
   "repository": {
     "type": "git",
@@ -28,5 +29,8 @@
     "method-override": "^3.0.0",
     "mongodb": "^5.1.0",
     "mongoose": "^6.10.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }
