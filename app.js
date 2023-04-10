@@ -1,6 +1,6 @@
 import express, { Router } from 'express'
 import methodOverride from 'method-override'
-import { connect } from 'mongoose'
+import mongoose, { connect } from 'mongoose'
 import restify from 'express-restify-mongoose';
 const { serve } = restify;
 
@@ -31,8 +31,8 @@ serve(router, sessions, serveOptions)
 app.use(router)
 
 app.listen(port, () => {
-    console.log(`Express server listening on port http://localhost:${port}`)
-  })
+  console.log(`Express server listening on port http://localhost:${port}`)
+})
 
 export default app;
 

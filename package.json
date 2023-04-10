@@ -7,11 +7,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "dev": "nodemon app.js",
+    "dev": "nodemon --legacy-watch app.js",
     "docker-build": "docker image build --file Dockerfile -t netflix-db-api:latest .",
     "docker-run": "docker container run -d --network netflix --name netflix-db-api netflix-db-api:latest",
     "docker-build-dev": "docker image build --file Dockerfile.dev -t netflix-db-api:dev .",
-    "docker-dev": "docker container run -d  --network netflix --publish 10021:10021 --name netflix-db-api-dev --volume %cd%:/home/node/app netflix-db-api:dev"
+    "docker-run-dev": "docker container run -d --rm --network netflix --publish 10021:10021 --name netflix-db-api-dev --volume %cd%:/home/node/app netflix-db-api:dev"
   },
   "repository": {
     "type": "git",
