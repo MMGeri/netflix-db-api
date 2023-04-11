@@ -1,36 +1,61 @@
 import { Router } from 'express'
-import users from './src/models/users.js'
+import users from '../models/users.js'
+import mongoose from 'mongoose';
 
 const router = Router()
 
 router.get('/users/:id/queue', async (req, res) => {
-    users
-        .findById(req.params.id)
-        .populate('queue')
-        .exec((err, user) => {
-            if (err) res.status(500).send(err.message)
-            res.send(user.queue)
-        });
+    try {
+        const userId = req.params.id;
+        const user = await users.findById(userId).populate('queue');
+    
+        if (!user) {
+          return res.status(404).send('User not found');
+        }
+    
+        res.json(user.queue);
+      } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+      }
 });
 
+//FIXME: DeprecationWarning: express-restify-mongoose: in a future major version, the PUT method will replace rather than update a resource. Use PATCH instead.
 router.put('/users/:id/queue/:videoId', async (req, res) => {
-    users
-        .findByIdAndUpdate(req.params.id, { $addToSet: { queue: req.params.videoId } }, { new: true })
-        .populate('queue')
-        .exec((err, user) => {
-            if (err) res.status(500).send(err.message)
-            res.send(user.queue)
-        });
-});
+    if (!mongoose.Types.ObjectId.isValid(req.params.videoId)) {
+      return res.status(400).send('Invalid videoId');
+    }
+  
+    try {
+      const user = await users.findByIdAndUpdate(
+        req.params.id,
+        { $addToSet: { queue: req.params.videoId } },
+        { new: true }
+      ).populate('queue');
+  
+      res.send(user.queue);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+  });
 
 router.delete('/users/:id/queue/:videoId', async (req, res) => {
-    users
-        .findByIdAndUpdate(req.params.id, { $pull: { queue: req.params.videoId } }, { new: true })
-        .populate('queue')
-        .exec((err, user) => {
-            if (err) res.status(500).send(err.message)
-            res.send(user.queue)
-        });
+    try {
+        const user = await users.findByIdAndUpdate(
+          req.params.id,
+          { $pull: { queue: req.params.videoId } },
+          { new: true }
+        ).populate('queue');
+    
+        if (!user) {
+          return res.status(404).send('User not found');
+        }
+    
+        res.json(user.queue);
+      } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+      }
 });
 
-export { router };
+export default router;
