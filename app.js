@@ -3,6 +3,7 @@ import methodOverride from 'method-override'
 import mongoose, { connect } from 'mongoose'
 import restify from 'express-restify-mongoose';
 import queueRouter from './src/routes/queue.js'
+import sessionRouter from './src/routes/sessions.js'
 const { serve } = restify;
 
 import videos from './src/models/videos.js'
@@ -30,8 +31,10 @@ serve(router, videos, serveOptions)
 serve(router, users, serveOptions)
 serve(router, sessions, serveOptions)
 
-app.use(router)
 app.use(queueRouter)
+app.use(sessionRouter)
+app.use(router)
+
 
 app.listen(port, () => {
   console.log(`Express server listening on port http://localhost:${port}`)
