@@ -7,7 +7,12 @@ const router = Router()
 router.get('/users/:id/queue', async (req, res) => {
     try {
         const userId = req.params.id;
-        const user = await users.findById(userId).populate('queue');
+        const sortBy = req.query.sort || 'title';
+
+        const user = await users.findById(userId).populate({
+          path: 'queue',
+          options: { sort: { [sortBy]: 1 } }
+        });
     
         if (!user) {
           return res.status(404).send('User not found');
