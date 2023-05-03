@@ -4,12 +4,10 @@ import mongoose, { connect } from 'mongoose';
 import restify from 'express-restify-mongoose';
 
 import queueRouter from './src/routes/queue.js';
-import sessionRouter from './src/routes/sessions.js';
 const { serve } = restify;
 
 import videos from './src/models/videos.js'
 import users from './src/models/users.js'
-import sessions from './src/models/sessions.js'
 
 const port = process.env.PORT || 10021;
 
@@ -33,7 +31,6 @@ const serveOptions = {
 
 serve(router, videos, serveOptions)
 serve(router, users, serveOptions)
-serve(router, sessions, serveOptions)
 
 router.get('/health', async (req, res) => {
   try {
@@ -51,7 +48,6 @@ router.get('/health', async (req, res) => {
 
 
 app.use(queueRouter)
-app.use(sessionRouter)
 app.use(router)
 
 

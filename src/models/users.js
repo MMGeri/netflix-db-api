@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
 
 const userSchema = new Schema({
-    email: { type: String, required: true, match: /\S+@\S+\.\S+/ },
+    username: { type: String, required: true },
     password: { type: String, required: true, minlength: 8, maxlength: 16 },
     queue: [{ type: Schema.Types.ObjectId, ref: 'videos' }],
 }, { versionKey: false });
